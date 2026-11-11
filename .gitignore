@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Log & file sementara
+*.log
+*.tmp
+
+# Paket hasil build/packaging ekstensi
+*.zip
+*.crx
+*.pem

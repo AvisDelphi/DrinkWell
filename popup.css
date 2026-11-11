@@ -1,0 +1,174 @@
+/* ---------- Warna: terang (default) ---------- */
+:root {
+  --bg: #EAF4FB;
+  --surface: #FFFFFF;
+  --mist: #D6EAF8;
+  --pastel: #B9DBF3;
+  --water: #8EC3EA;
+  --accent: #5B9BD5;
+  --accent-hover: #4A8AC4;
+  --on-accent: #FFFFFF;
+  --ink: #2F4A66;
+  --soft-ink: #6683A0;
+  --done: #4FA987;
+  color-scheme: light;
+}
+
+/* ---------- Warna: gelap ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #132131;
+    --surface: #1B2C40;
+    --mist: #24384F;
+    --pastel: #33506F;
+    --water: #5E97C9;
+    --accent: #9CCBF0;
+    --accent-hover: #B5D9F5;
+    --on-accent: #132131;
+    --ink: #DDEBF7;
+    --soft-ink: #8EA8C1;
+    --done: #6CC4A1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #132131;
+  --surface: #1B2C40;
+  --mist: #24384F;
+  --pastel: #33506F;
+  --water: #5E97C9;
+  --accent: #9CCBF0;
+  --accent-hover: #B5D9F5;
+  --on-accent: #132131;
+  --ink: #DDEBF7;
+  --soft-ink: #8EA8C1;
+  --done: #6CC4A1;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 300px;
+  margin: 0;
+  padding: 16px 18px 18px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Header */
+.top { display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 17px; }
+.controls { display: flex; align-items: center; gap: 10px; }
+
+.icon-btn {
+  width: 30px; height: 30px; border: 0; border-radius: 50%;
+  background: var(--mist); display: grid; place-items: center; padding: 0;
+}
+.icon-btn svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.icon-btn .moon { fill: var(--ink); stroke: none; }
+.icon-btn .sun { display: none; }
+:root[data-theme="dark"] .icon-btn .sun { display: block; }
+:root[data-theme="dark"] .icon-btn .moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-btn .sun { display: block; }
+  :root:not([data-theme="light"]) .icon-btn .moon { display: none; }
+}
+
+.switch input { position: absolute; opacity: 0; }
+.track {
+  display: block; width: 40px; height: 22px; border-radius: 11px;
+  background: var(--pastel); position: relative; transition: background .2s;
+}
+.thumb {
+  position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--surface); transition: transform .2s;
+}
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track .thumb { transform: translateX(18px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Gelas */
+.glass-wrap { text-align: center; margin: 18px 0 6px; }
+.glass {
+  position: relative; width: 168px; height: 168px; margin: 0 auto;
+  border-radius: 50%; background: var(--surface); overflow: hidden;
+  border: 6px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--pastel);
+}
+.water {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 0%;
+  background: var(--water);
+  transition: height .8s cubic-bezier(.3, .8, .3, 1);
+}
+.wave {
+  position: absolute; top: -11px; left: 0; width: 200%; height: 12px;
+  fill: var(--water);
+  animation: drift 4s linear infinite;
+}
+@keyframes drift { to { transform: translateX(-50%); } }
+
+.reading {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.reading strong { font-size: 44px; font-weight: 800; line-height: 1; }
+.reading span { font-size: 13px; font-weight: 700; margin-top: 2px; }
+.reading small { color: var(--soft-ink); font-size: 11px; margin-top: 4px; }
+
+.next { margin: 12px 0 0; color: var(--soft-ink); font-size: 13px; }
+
+/* Tombol minum */
+.drink {
+  display: flex; flex-direction: column; align-items: center; width: 100%;
+  margin-top: 14px; padding: 11px 0; border: 0; border-radius: 14px;
+  background: var(--accent); color: var(--on-accent);
+  transition: background .15s, transform .1s;
+}
+.drink span { font-weight: 800; font-size: 15px; }
+.drink small { opacity: .8; font-size: 11px; }
+.drink:hover { background: var(--accent-hover); }
+.drink:active { transform: scale(.97); }
+
+.undo {
+  display: block; margin: 8px auto 0; border: 0; background: none;
+  color: var(--soft-ink); font-size: 12px; text-decoration: underline;
+}
+
+/* Minggu ini */
+.week { margin-top: 14px; padding: 12px 14px; background: var(--surface); border-radius: 14px; }
+.week h2 { margin: 0 0 10px; font-size: 13px; font-weight: 700; }
+.week ol { list-style: none; margin: 0; padding: 0; display: flex; justify-content: space-between; }
+.week li { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: var(--soft-ink); }
+.dot { width: 24px; height: 24px; border-radius: 50%; background: var(--mist); position: relative; overflow: hidden; }
+.dot i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--water); }
+.dot.done { background: var(--accent); }
+.week li.today { color: var(--ink); font-weight: 800; }
+
+/* Pengaturan */
+.settings { margin-top: 12px; }
+.settings summary { cursor: pointer; font-weight: 700; padding: 6px 2px; list-style: none; }
+.settings summary::-webkit-details-marker { display: none; }
+.settings summary::before { content: "▸ "; color: var(--accent); }
+.settings[open] summary::before { content: "▾ "; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+.grid label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--soft-ink); }
+.grid input, .grid select {
+  border: 1.5px solid var(--pastel); border-radius: 10px; padding: 7px 9px;
+  background: var(--surface); color: var(--ink);
+}
+.actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.actions button { border: 0; border-radius: 10px; padding: 8px 14px; font-weight: 700; }
+.ghost { background: var(--mist); }
+.primary { background: var(--accent); color: var(--on-accent); }
+.saved { margin: 6px 0 0; text-align: right; font-size: 12px; color: var(--done); }
+
+@media (prefers-reduced-motion: reduce) {
+  .wave { animation: none; }
+  .water, .track, .thumb, .drink { transition: none; }
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>DrinkWell</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="icons/icon48.png" alt="" width="28" height="28">
+      <span>DrinkWell</span>
+    </div>
+    <div class="controls">
+      <button class="icon-btn" id="theme-toggle" title="Ganti mode terang/gelap" aria-label="Ganti mode terang/gelap">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
+      <label class="switch" title="Nyalakan/matikan pengingat">
+        <input type="checkbox" id="enabled" aria-label="Pengingat aktif">
+        <span class="track"><span class="thumb"></span></span>
+      </label>
+    </div>
+  </header>
+
+  <section class="glass-wrap">
+    <div class="glass" id="glass" role="img" aria-label="Progres minum hari ini">
+      <div class="water" id="water">
+        <svg class="wave" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0 Z"/>
+        </svg>
+      </div>
+      <div class="reading">
+        <strong id="glasses">0</strong>
+        <span id="glasses-label">gelas hari ini</span>
+        <small id="approx">±0 dari 2100 ml</small>
+      </div>
+    </div>
+    <p class="next" id="next">Pengingat berikutnya —</p>
+  </section>
+
+  <button class="drink" id="drink">
+    <span>+ Minum 1 gelas</span>
+    <small id="drink-ml">±250 ml</small>
+  </button>
+  <button class="undo" id="undo">Batalkan gelas terakhir</button>
+
+  <section class="week">
+    <h2>Minggu ini</h2>
+    <ol id="week"></ol>
+  </section>
+
+  <details class="settings">
+    <summary>Pengaturan</summary>
+    <div class="grid">
+      <label>Target harian (ml)
+        <input type="number" id="s-target" min="500" max="6000" step="100">
+      </label>
+      <label>Isi 1 gelas (ml)
+        <input type="number" id="s-glass" min="50" max="1000" step="50">
+      </label>
+      <label>Ingatkan setiap
+        <select id="s-interval">
+          <option value="15">15 menit</option>
+          <option value="20">20 menit</option>
+          <option value="30">30 menit</option>
+          <option value="60">1 jam</option>
+        </select>
+      </label>
+      <label>Tampilan
+        <select id="s-theme">
+          <option value="auto">Ikuti sistem</option>
+          <option value="light">Terang</option>
+          <option value="dark">Gelap</option>
+        </select>
+      </label>
+      <label>Jam bangun
+        <input type="time" id="s-wake">
+      </label>
+      <label>Jam tidur
+        <input type="time" id="s-sleep">
+      </label>
+    </div>
+    <div class="actions">
+      <button id="test" class="ghost">Tes notifikasi</button>
+      <button id="save" class="primary">Simpan</button>
+    </div>
+    <p class="saved" id="saved" hidden>Tersimpan</p>
+  </details>
+
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
