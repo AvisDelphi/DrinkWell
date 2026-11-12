@@ -1,12 +1,12 @@
-// Helper bahasa bersama untuk popup dan background.
-// Semua teks disimpan terpisah di locales/id.js dan locales/en.js.
+// Shared language helper for the popup and background.
+// All strings are stored separately in locales/en.js and locales/id.js.
 (function (global) {
   const LANGS = ["en", "id"];
   const DEFAULT_LANG = "en";
   let current = DEFAULT_LANG;
 
-  // Petunjuk awal dari localStorage supaya teks tidak berkedip saat popup dibuka.
-  // Sumber utamanya tetap chrome.storage (settings.lang).
+  // Initial hint from localStorage so text doesn't flicker when the popup opens.
+  // The source of truth is still chrome.storage (settings.lang).
   try {
     const saved = global.localStorage.getItem("dw-lang");
     if (saved) current = normalize(saved);
@@ -34,8 +34,8 @@
     return LANGS[(LANGS.indexOf(current) + 1) % LANGS.length];
   }
 
-  // Ambil teks berdasarkan kunci, dengan fallback ke bahasa default.
-  // Nilai non-string (mis. array hari) dikembalikan apa adanya.
+  // Get a string by key, falling back to the default language.
+  // Non-string values (e.g. the days array) are returned as is.
   function t(key, vars) {
     const value = key in dict(current) ? dict(current)[key] : dict(DEFAULT_LANG)[key];
     if (value === undefined) return key;
@@ -46,7 +46,7 @@
     );
   }
 
-  // Terapkan kamus ke elemen ber-atribut data-i18n*.
+  // Apply the dictionary to elements with data-i18n* attributes.
   function applyI18n(root) {
     if (typeof document === "undefined") return;
     const scope = root || document;

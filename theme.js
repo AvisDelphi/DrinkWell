@@ -1,5 +1,5 @@
-// Dipasang di <head> agar tema langsung terpakai tanpa kedipan.
-// Salinan cepat disimpan di localStorage halaman extension; sumber utamanya chrome.storage.
+// Loaded in <head> so the theme applies immediately without flicker.
+// A quick copy is kept in the extension page's localStorage; the source of truth is chrome.storage.
 (function () {
   try {
     const t = localStorage.getItem("dw-theme");

@@ -1,28 +1,28 @@
-// Logika bersama untuk popup dan background
+// Shared logic for the popup and background
 const DEFAULT_SETTINGS = {
   enabled: true,
-  interval: 30,       // menit
-  target: 2100,       // ml per hari
-  glass: 250,         // ml per gelas
+  interval: 30,       // minutes
+  target: 2100,       // ml per day
+  glass: 250,         // ml per glass
   wake: "06:00",
   sleep: "22:00",
   theme: "auto",      // auto | light | dark
   lang: "en"          // en | id
 };
 
-// Pilihan interval yang membagi 60 menit dengan rata,
-// supaya pengingat selalu jatuh di menit yang "bulat" (00, 30, dst.)
+// Interval options that divide 60 minutes evenly,
+// so reminders always land on a "round" minute (00, 30, etc.)
 const INTERVALS = [15, 20, 30, 60];
 
-// Waktu pengingat berikutnya yang selaras jam dinding.
-// Contoh interval 30: 10:07 -> 10:30, 10:30 -> 11:00.
+// Next reminder time aligned to the wall clock.
+// Example with interval 30: 10:07 -> 10:30, 10:30 -> 11:00.
 function nextBoundary(interval, from = new Date()) {
-  const base = new Date(from.getTime() + 30 * 1000); // toleransi jika alarm terbangun sedikit lebih awal
+  const base = new Date(from.getTime() + 30 * 1000); // tolerance in case the alarm wakes slightly early
   const next = new Date(base);
   next.setSeconds(0, 0);
   const minutes = next.getHours() * 60 + next.getMinutes();
   const target = (Math.floor(minutes / interval) + 1) * interval;
-  next.setHours(0, target, 0, 0); // setHours menangani lewat tengah malam otomatis
+  next.setHours(0, target, 0, 0); // setHours handles rolling past midnight automatically
   return next;
 }
 
@@ -53,7 +53,7 @@ async function addDrink(ml) {
   const { log } = await getState();
   const key = dateKey();
   log[key] = [...(log[key] || []), { t: Date.now(), ml }];
-  // simpan riwayat 60 hari terakhir saja
+  // keep only the last 60 days of history
   const keys = Object.keys(log).sort();
   while (keys.length > 60) delete log[keys.shift()];
   await chrome.storage.local.set({ log });

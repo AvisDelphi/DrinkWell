@@ -7,8 +7,8 @@ async function schedule() {
   const { settings } = await getState();
   await chrome.alarms.clear(ALARM);
   if (settings.enabled) {
-    // Alarm sekali jalan di menit bulat berikutnya; dijadwalkan ulang tiap kali berbunyi.
-    // Mencatat minum tidak memengaruhi jadwal ini.
+    // One-shot alarm on the next round minute; rescheduled every time it fires.
+    // Logging a drink does not affect this schedule.
     chrome.alarms.create(ALARM, { when: nextBoundary(settings.interval).getTime() });
   }
   updateBadge();
@@ -52,7 +52,7 @@ chrome.runtime.onStartup.addListener(schedule);
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === ALARM) {
-    await chrome.alarms.clear(SNOOZE); // hindari dua notifikasi berdekatan
+    await chrome.alarms.clear(SNOOZE); // avoid two notifications close together
     await remind();
     await schedule();
   } else if (alarm.name === SNOOZE) {
@@ -73,7 +73,7 @@ chrome.notifications.onButtonClicked.addListener(async (id, index) => {
 
 chrome.notifications.onClicked.addListener((id) => chrome.notifications.clear(id));
 
-// Pesan dari popup
+// Messages from the popup
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === "reschedule") schedule().then(() => sendResponse(true));
   if (msg.type === "badge") updateBadge().then(() => sendResponse(true));
@@ -81,5 +81,5 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   return true;
 });
 
-// Perbarui badge saat ganti hari / data berubah
+// Update the badge when the day changes / data changes
 chrome.storage.onChanged.addListener(updateBadge);
