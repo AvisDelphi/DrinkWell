@@ -10,63 +10,91 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <header class="top">
-    <div class="brand">
-      <img src="icons/icon48.png" alt="" width="28" height="28">
-      <span>DrinkWell</span>
+  <!-- ===================== Tampilan utama ===================== -->
+  <main id="view-home" class="view">
+    <header class="bar">
+      <div class="brand">
+        <img src="icons/icon32.png" alt="" width="20" height="20">
+        <span>DrinkWell</span>
+      </div>
+      <div class="bar-actions">
+        <button class="icon-btn lang-btn" id="lang-toggle" data-i18n-title="lang.toggle" data-i18n-aria="lang.toggle">
+          <span id="lang-label">ID</span>
+        </button>
+        <button class="icon-btn" id="theme-toggle" data-i18n-title="theme.toggle" data-i18n-aria="theme.toggle">
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+        </button>
+        <button class="icon-btn" id="open-settings" data-i18n-title="settings.title" data-i18n-aria="settings.title">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="progress" id="glass" role="img" data-i18n-aria="glass.aria">
+      <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="ring-track" cx="60" cy="60" r="52"/>
+        <circle class="ring-fill" id="ring" cx="60" cy="60" r="52"/>
+      </svg>
+      <div class="reading">
+        <strong id="glasses">0</strong>
+        <span id="goal"></span>
+      </div>
+    </section>
+    <p class="approx" id="approx"></p>
+
+    <div class="drink-row">
+      <button class="drink" id="drink">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span data-i18n="drink.label"></span>
+        <small id="drink-ml"></small>
+      </button>
+      <button class="icon-btn undo" id="undo" data-i18n-title="drink.undo" data-i18n-aria="drink.undo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7H5V3"/><path d="M5.6 7A8 8 0 1 1 4 12"/></svg>
+      </button>
     </div>
-    <div class="controls">
-      <button class="icon-btn lang-btn" id="lang-toggle" data-i18n-title="lang.toggle" data-i18n-aria="lang.toggle">
-        <span id="lang-label">ID</span>
-      </button>
-      <button class="icon-btn" id="theme-toggle" data-i18n-title="theme.toggle" data-i18n-aria="theme.toggle">
-        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
-      </button>
+
+    <section class="panel status">
+      <svg class="status-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
+      <p id="next" data-i18n="next.pending"></p>
       <label class="switch" data-i18n-title="reminder.toggle">
         <input type="checkbox" id="enabled" data-i18n-aria="reminder.aria">
         <span class="track"><span class="thumb"></span></span>
       </label>
-    </div>
-  </header>
+    </section>
 
-  <section class="glass-wrap">
-    <div class="glass" id="glass" role="img" data-i18n-aria="glass.aria">
-      <div class="water" id="water">
-        <svg class="wave" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0 Z"/>
-        </svg>
+    <section class="panel week">
+      <div class="panel-head">
+        <h2 data-i18n="week.title"></h2>
+        <span id="week-summary"></span>
       </div>
-      <div class="reading">
-        <strong id="glasses">0</strong>
-        <span id="glasses-label" data-i18n="glass.label"></span>
-        <small id="approx"></small>
-      </div>
+      <ol id="week"></ol>
+    </section>
+  </main>
+
+  <!-- ===================== Pengaturan ===================== -->
+  <main id="view-settings" class="view" hidden>
+    <header class="bar">
+      <button class="icon-btn" id="close-settings" data-i18n-title="settings.back" data-i18n-aria="settings.back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <h1 data-i18n="settings.title"></h1>
+      <span class="saved" id="saved" aria-live="polite"></span>
+    </header>
+
+    <h2 class="group-title" data-i18n="section.goal"></h2>
+    <div class="panel list">
+      <label class="row"><span data-i18n="settings.target"></span>
+        <span class="field"><input type="number" id="s-target" min="500" max="6000" step="100"><em>ml</em></span>
+      </label>
+      <label class="row"><span data-i18n="settings.glass"></span>
+        <span class="field"><input type="number" id="s-glass" min="50" max="1000" step="50"><em>ml</em></span>
+      </label>
     </div>
-    <p class="next" id="next" data-i18n="next.pending"></p>
-  </section>
 
-  <button class="drink" id="drink">
-    <span data-i18n="drink.add"></span>
-    <small id="drink-ml"></small>
-  </button>
-  <button class="undo" id="undo" data-i18n="drink.undo"></button>
-
-  <section class="week">
-    <h2 data-i18n="week.title"></h2>
-    <ol id="week"></ol>
-  </section>
-
-  <details class="settings">
-    <summary data-i18n="settings.title"></summary>
-    <div class="grid">
-      <label><span data-i18n="settings.target"></span>
-        <input type="number" id="s-target" min="500" max="6000" step="100">
-      </label>
-      <label><span data-i18n="settings.glass"></span>
-        <input type="number" id="s-glass" min="50" max="1000" step="50">
-      </label>
-      <label><span data-i18n="settings.interval"></span>
+    <h2 class="group-title" data-i18n="section.reminder"></h2>
+    <div class="panel list">
+      <label class="row"><span data-i18n="settings.interval"></span>
         <select id="s-interval">
           <option value="15" data-i18n="interval.15"></option>
           <option value="20" data-i18n="interval.20"></option>
@@ -74,26 +102,27 @@
           <option value="60" data-i18n="interval.60"></option>
         </select>
       </label>
-      <label><span data-i18n="settings.appearance"></span>
+      <label class="row"><span data-i18n="settings.wake"></span>
+        <input type="time" id="s-wake">
+      </label>
+      <label class="row"><span data-i18n="settings.sleep"></span>
+        <input type="time" id="s-sleep">
+      </label>
+    </div>
+
+    <h2 class="group-title" data-i18n="section.display"></h2>
+    <div class="panel list">
+      <label class="row"><span data-i18n="settings.appearance"></span>
         <select id="s-theme">
           <option value="auto" data-i18n="theme.auto"></option>
           <option value="light" data-i18n="theme.light"></option>
           <option value="dark" data-i18n="theme.dark"></option>
         </select>
       </label>
-      <label><span data-i18n="settings.wake"></span>
-        <input type="time" id="s-wake">
-      </label>
-      <label><span data-i18n="settings.sleep"></span>
-        <input type="time" id="s-sleep">
-      </label>
     </div>
-    <div class="actions">
-      <button id="test" class="ghost" data-i18n="actions.test"></button>
-      <button id="save" class="primary" data-i18n="actions.save"></button>
-    </div>
-    <p class="saved" id="saved" hidden data-i18n="settings.saved"></p>
-  </details>
+
+    <button class="text-btn" id="test" data-i18n="actions.test"></button>
+  </main>
 
   <script src="common.js"></script>
   <script src="popup.js"></script>

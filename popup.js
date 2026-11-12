@@ -1,6 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const { t } = DWI18n;
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const RING = 2 * Math.PI * 52; // keliling cincin progres
 
 // Terapkan bahasa awal secara sinkron (pakai petunjuk localStorage),
 // sebelum data pengaturan selesai dibaca.
@@ -16,8 +17,8 @@ function applyTheme(theme) {
 }
 
 function effectiveTheme() {
-  const t = document.documentElement.dataset.theme;
-  return t || (darkQuery.matches ? "dark" : "light");
+  const th = document.documentElement.dataset.theme;
+  return th || (darkQuery.matches ? "dark" : "light");
 }
 
 $("theme-toggle").addEventListener("click", async () => {
@@ -42,25 +43,45 @@ $("lang-toggle").addEventListener("click", async () => {
   render();
 });
 
+/* ---------- Navigasi tampilan ---------- */
+function showView(name) {
+  const settings = name === "settings";
+  $("view-home").hidden = settings;
+  $("view-settings").hidden = !settings;
+  (settings ? $("close-settings") : $("open-settings")).focus();
+}
+
+$("open-settings").addEventListener("click", () => showView("settings"));
+$("close-settings").addEventListener("click", () => showView("home"));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !$("view-settings").hidden) {
+    e.preventDefault();
+    showView("home");
+  }
+});
+
 /* ---------- Tampilan utama ---------- */
 async function render() {
   const { settings, log } = await getState();
   const total = totalFor(log);
   const glasses = Math.round(total / settings.glass);
-  const pct = Math.min(100, (total / settings.target) * 100);
+  const goalGlasses = Math.max(1, Math.round(settings.target / settings.glass));
+  const ratio = Math.min(1, total / settings.target);
 
   applyTheme(settings.theme);
   applyLanguage(settings.lang);
+
   $("enabled").checked = settings.enabled;
   $("glasses").textContent = glasses;
+  $("goal").textContent = t("glass.of", { goal: goalGlasses });
   $("approx").textContent = t("glass.approx", { total, target: settings.target });
-  $("water").style.height = `${pct}%`;
+  $("ring").style.strokeDashoffset = RING * (1 - ratio);
+  $("glass").classList.toggle("complete", ratio >= 1);
   $("glass").setAttribute("aria-label", t("glass.summary", {
     glasses, total, target: settings.target
   }));
   $("drink-ml").textContent = t("drink.amount", { glass: settings.glass });
   $("undo").disabled = total === 0;
-  $("undo").style.visibility = total === 0 ? "hidden" : "visible";
 
   renderWeek(log, settings.target);
   renderNext(settings);
@@ -69,9 +90,11 @@ async function render() {
 
 function renderWeek(log, target) {
   const today = new Date();
+  const todayKey = dateKey(today);
   const monday = new Date(today);
   monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
   const days = t("week.days");
+  let met = 0;
 
   $("week").innerHTML = "";
   days.forEach((name, i) => {
@@ -80,20 +103,25 @@ function renderWeek(log, target) {
     const key = dateKey(d);
     const dayTotal = totalFor(log, key);
     const ratio = Math.min(1, dayTotal / target);
+    if (ratio >= 1) met++;
 
     const li = document.createElement("li");
-    if (key === dateKey(today)) li.className = "today";
-    const dot = document.createElement("span");
-    dot.className = "dot" + (ratio >= 1 ? " done" : "");
-    dot.title = t("week.dot", { total: dayTotal });
-    if (ratio > 0 && ratio < 1) {
+    if (key === todayKey) li.classList.add("today");
+    if (key > todayKey) li.classList.add("future");
+
+    const col = document.createElement("span");
+    col.className = "bar-col" + (ratio >= 1 ? " met" : "");
+    col.title = t("week.dot", { total: dayTotal });
+    if (ratio > 0) {
       const fill = document.createElement("i");
-      fill.style.height = `${ratio * 100}%`;
-      dot.appendChild(fill);
+      fill.style.height = `${Math.max(8, ratio * 100)}%`;
+      col.appendChild(fill);
     }
-    li.append(dot, name);
+    li.append(col, name);
     $("week").appendChild(li);
   });
+
+  $("week-summary").textContent = t("week.summary", { met });
 }
 
 async function renderNext(settings) {
@@ -119,15 +147,15 @@ async function renderNext(settings) {
 }
 
 function fillSettings(s) {
-  const box = document.querySelector(".settings");
-  if (box.dataset.filled) return;
+  const view = $("view-settings");
+  if (view.dataset.filled) return;
   $("s-target").value = s.target;
   $("s-glass").value = s.glass;
   $("s-interval").value = String(s.interval);
   $("s-theme").value = s.theme;
   $("s-wake").value = s.wake;
   $("s-sleep").value = s.sleep;
-  box.dataset.filled = "1";
+  view.dataset.filled = "1";
 }
 
 /* ---------- Aksi ---------- */
@@ -148,25 +176,40 @@ $("enabled").addEventListener("change", async (e) => {
   render();
 });
 
-$("s-theme").addEventListener("change", (e) => applyTheme(e.target.value));
+/* ---------- Pengaturan: simpan otomatis ---------- */
+let savedTimer;
+function flashSaved() {
+  const el = $("saved");
+  el.textContent = t("settings.saved");
+  el.classList.add("show");
+  clearTimeout(savedTimer);
+  savedTimer = setTimeout(() => el.classList.remove("show"), 1400);
+}
 
-$("save").addEventListener("click", async () => {
+async function saveField() {
   const before = (await getState()).settings;
   const next = await saveSettings({
-    target: Math.max(500, Number($("s-target").value) || before.target),
-    glass: Math.max(50, Number($("s-glass").value) || before.glass),
+    target: Math.min(6000, Math.max(500, Number($("s-target").value) || before.target)),
+    glass: Math.min(1000, Math.max(50, Number($("s-glass").value) || before.glass)),
     interval: Number($("s-interval").value),
     theme: $("s-theme").value,
     wake: $("s-wake").value || before.wake,
     sleep: $("s-sleep").value || before.sleep
   });
+  // Tampilkan nilai yang sudah dibatasi
+  $("s-target").value = next.target;
+  $("s-glass").value = next.glass;
   if (next.interval !== before.interval) {
     await chrome.runtime.sendMessage({ type: "reschedule" });
   }
-  $("saved").hidden = false;
-  setTimeout(() => ($("saved").hidden = true), 1500);
+  flashSaved();
   render();
-});
+}
+
+["s-target", "s-glass", "s-interval", "s-theme", "s-wake", "s-sleep"].forEach((id) =>
+  $(id).addEventListener("change", saveField)
+);
+$("s-theme").addEventListener("input", (e) => applyTheme(e.target.value));
 
 $("test").addEventListener("click", () => chrome.runtime.sendMessage({ type: "test" }));
 

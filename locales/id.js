@@ -29,8 +29,8 @@ self.DW_LOCALES.id = {
 
   // Pengaturan
   "settings.title": "Pengaturan",
-  "settings.target": "Target harian (ml)",
-  "settings.glass": "Isi 1 gelas (ml)",
+  "settings.target": "Target harian",
+  "settings.glass": "Isi 1 gelas",
   "settings.interval": "Ingatkan setiap",
   "settings.appearance": "Tampilan",
   "settings.wake": "Jam bangun",
@@ -52,6 +52,15 @@ self.DW_LOCALES.id = {
   "notify.done": "Target harian sudah tercapai. Tetap minum secukupnya, ya.",
   "notify.drank": "Sudah minum",
   "notify.snooze": "Ingatkan 10 menit lagi",
+
+  // Redesign
+  "glass.of": "dari {goal} gelas",
+  "drink.label": "Minum 1 gelas",
+  "week.summary": "{met}/7 hari tercapai",
+  "settings.back": "Kembali",
+  "section.goal": "Target",
+  "section.reminder": "Pengingat",
+  "section.display": "Tampilan",
 
   // Badge
   "badge.off": "off"
