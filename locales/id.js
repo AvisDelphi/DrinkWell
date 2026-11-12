@@ -1,13 +1,13 @@
-// Bahasa Indonesia
+// Indonesian
 self.DW_LOCALES = self.DW_LOCALES || {};
 self.DW_LOCALES.id = {
-  // Umum
+  // General
   "lang.toggle": "Ganti bahasa",
   "theme.toggle": "Ganti mode terang/gelap",
   "reminder.toggle": "Nyalakan/matikan pengingat",
   "reminder.aria": "Pengingat aktif",
 
-  // Gelas
+  // Glass
   "glass.aria": "Progres minum hari ini",
   "glass.label": "gelas hari ini",
   "glass.approx": "±{total} dari {target} ml",
@@ -17,17 +17,17 @@ self.DW_LOCALES.id = {
   "next.at": "Pengingat berikutnya pukul {time}",
   "next.outside": "Di luar jam aktif, lanjut pukul {wake}",
 
-  // Aksi utama
+  // Main actions
   "drink.add": "+ Minum 1 gelas",
   "drink.amount": "±{glass} ml",
   "drink.undo": "Batalkan gelas terakhir",
 
-  // Minggu ini
+  // This week
   "week.title": "Minggu ini",
   "week.dot": "±{total} ml",
   "week.days": ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"],
 
-  // Pengaturan
+  // Settings
   "settings.title": "Pengaturan",
   "settings.target": "Target harian",
   "settings.glass": "Isi 1 gelas",
@@ -46,7 +46,7 @@ self.DW_LOCALES.id = {
   "actions.test": "Tes notifikasi",
   "actions.save": "Simpan",
 
-  // Notifikasi
+  // Notifications
   "notify.title": "Waktunya minum air 💧",
   "notify.message": "Hari ini kamu sudah minum sekitar {glasses} gelas (±{total} ml). Yuk, satu gelas lagi.",
   "notify.done": "Target harian sudah tercapai. Tetap minum secukupnya, ya.",

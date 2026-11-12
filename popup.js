@@ -1,14 +1,14 @@
 const $ = (id) => document.getElementById(id);
 const { t } = DWI18n;
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-const RING = 2 * Math.PI * 52; // keliling cincin progres
+const RING = 2 * Math.PI * 52; // circumference of the progress ring
 
-// Terapkan bahasa awal secara sinkron (pakai petunjuk localStorage),
-// sebelum data pengaturan selesai dibaca.
+// Apply the initial language synchronously (using the localStorage hint),
+// before the settings have finished loading.
 DWI18n.applyI18n();
 $("lang-label").textContent = DWI18n.getLang().toUpperCase();
 
-/* ---------- Tema ---------- */
+/* ---------- Theme ---------- */
 function applyTheme(theme) {
   const root = document.documentElement;
   if (theme === "light" || theme === "dark") root.dataset.theme = theme;
@@ -28,7 +28,7 @@ $("theme-toggle").addEventListener("click", async () => {
   await saveSettings({ theme: next });
 });
 
-/* ---------- Bahasa ---------- */
+/* ---------- Language ---------- */
 function applyLanguage(lang) {
   DWI18n.setLang(lang);
   DWI18n.applyI18n();
@@ -43,7 +43,7 @@ $("lang-toggle").addEventListener("click", async () => {
   render();
 });
 
-/* ---------- Navigasi tampilan ---------- */
+/* ---------- View navigation ---------- */
 function showView(name) {
   const settings = name === "settings";
   $("view-home").hidden = settings;
@@ -60,7 +60,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* ---------- Tampilan utama ---------- */
+/* ---------- Main view ---------- */
 async function render() {
   const { settings, log } = await getState();
   const total = totalFor(log);
@@ -158,10 +158,10 @@ function fillSettings(s) {
   view.dataset.filled = "1";
 }
 
-/* ---------- Aksi ---------- */
+/* ---------- Actions ---------- */
 $("drink").addEventListener("click", async () => {
   const { settings } = await getState();
-  await addDrink(settings.glass); // tidak mengubah jadwal pengingat
+  await addDrink(settings.glass); // does not change the reminder schedule
   render();
 });
 
@@ -176,7 +176,7 @@ $("enabled").addEventListener("change", async (e) => {
   render();
 });
 
-/* ---------- Pengaturan: simpan otomatis ---------- */
+/* ---------- Settings: autosave ---------- */
 let savedTimer;
 function flashSaved() {
   const el = $("saved");
@@ -196,7 +196,7 @@ async function saveField() {
     wake: $("s-wake").value || before.wake,
     sleep: $("s-sleep").value || before.sleep
   });
-  // Tampilkan nilai yang sudah dibatasi
+  // Show the clamped values
   $("s-target").value = next.target;
   $("s-glass").value = next.glass;
   if (next.interval !== before.interval) {
