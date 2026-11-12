@@ -29,8 +29,8 @@ self.DW_LOCALES.en = {
 
   // Settings
   "settings.title": "Settings",
-  "settings.target": "Daily target (ml)",
-  "settings.glass": "Glass size (ml)",
+  "settings.target": "Daily target",
+  "settings.glass": "Glass size",
   "settings.interval": "Remind every",
   "settings.appearance": "Appearance",
   "settings.wake": "Wake-up time",
@@ -52,6 +52,15 @@ self.DW_LOCALES.en = {
   "notify.done": "Daily goal reached. Keep drinking as needed.",
   "notify.drank": "I drank",
   "notify.snooze": "Remind me in 10 minutes",
+
+  // Redesign
+  "glass.of": "of {goal} glasses",
+  "drink.label": "Drink 1 glass",
+  "week.summary": "{met}/7 days met",
+  "settings.back": "Back",
+  "section.goal": "Goal",
+  "section.reminder": "Reminders",
+  "section.display": "Display",
 
   // Badge
   "badge.off": "off"

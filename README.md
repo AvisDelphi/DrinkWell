@@ -11,8 +11,8 @@
 - ⏰ **Pengingat otomatis** setiap 15, 20, 30, atau 60 menit — selaras dengan jam dinding (mis. :00 dan :30).
 - 🔔 **Notifikasi interaktif** dengan tombol **“Sudah minum”** dan **“Ingatkan 10 menit lagi”** (snooze).
 - 🥤 **Pencatat asupan** satu klik per gelas, lengkap dengan tombol batalkan gelas terakhir.
-- 📊 **Progres visual** berbentuk gelas berisi air dan badge persentase pada ikon ekstensi.
-- 🗓️ **Riwayat mingguan** (Senin–Minggu) untuk melihat konsistensi minum.
+- 📊 **Progres visual** berupa cincin progres (jumlah gelas dari target) dan badge persentase pada ikon ekstensi.
+- 🗓️ **Riwayat mingguan** (Senin–Minggu) berupa grafik batang mini beserta jumlah hari yang mencapai target.
 - 🌙 **Mode gelap/terang** yang bisa mengikuti sistem atau diatur manual.
 - 🌐 **Dua bahasa** — Indonesia dan English, bisa diganti lewat tombol bahasa di popup.
 - 🕕 **Jam aktif** — pengingat hanya muncul antara jam bangun dan jam tidur.
@@ -36,12 +36,12 @@ Ekstensi ini belum dipublikasikan di Chrome Web Store, jadi dipasang secara manu
 | Aksi | Cara |
 | --- | --- |
 | Mencatat minum | Klik ikon ekstensi → **+ Minum 1 gelas** |
-| Membatalkan catatan terakhir | Klik **Batalkan gelas terakhir** |
-| Menyalakan/mematikan pengingat | Toggle di kanan atas popup |
+| Membatalkan catatan terakhir | Klik ikon ↺ di sebelah tombol minum |
+| Menyalakan/mematikan pengingat | Toggle di baris pengingat (ikon lonceng) |
 | Mengubah tema | Tombol bulan/matahari di kanan atas |
 | Mengubah bahasa | Tombol **ID/EN** di kanan atas |
-| Mengatur target & interval | Buka bagian **Pengaturan** di popup |
-| Mencoba notifikasi | **Pengaturan** → **Tes notifikasi** |
+| Mengatur target & interval | Ikon pengaturan di kanan atas (tersimpan otomatis) |
+| Mencoba notifikasi | Pengaturan → **Tes notifikasi** |
 
 ### Pengaturan yang tersedia
 
