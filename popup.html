@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>DrinkWell</title>
   <script src="theme.js"></script>
+  <script src="locales/id.js"></script>
+  <script src="locales/en.js"></script>
+  <script src="i18n.js"></script>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -13,19 +16,22 @@
       <span>DrinkWell</span>
     </div>
     <div class="controls">
-      <button class="icon-btn" id="theme-toggle" title="Ganti mode terang/gelap" aria-label="Ganti mode terang/gelap">
+      <button class="icon-btn lang-btn" id="lang-toggle" data-i18n-title="lang.toggle" data-i18n-aria="lang.toggle">
+        <span id="lang-label">ID</span>
+      </button>
+      <button class="icon-btn" id="theme-toggle" data-i18n-title="theme.toggle" data-i18n-aria="theme.toggle">
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
       </button>
-      <label class="switch" title="Nyalakan/matikan pengingat">
-        <input type="checkbox" id="enabled" aria-label="Pengingat aktif">
+      <label class="switch" data-i18n-title="reminder.toggle">
+        <input type="checkbox" id="enabled" data-i18n-aria="reminder.aria">
         <span class="track"><span class="thumb"></span></span>
       </label>
     </div>
   </header>
 
   <section class="glass-wrap">
-    <div class="glass" id="glass" role="img" aria-label="Progres minum hari ini">
+    <div class="glass" id="glass" role="img" data-i18n-aria="glass.aria">
       <div class="water" id="water">
         <svg class="wave" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 V20 H0 Z"/>
@@ -33,60 +39,60 @@
       </div>
       <div class="reading">
         <strong id="glasses">0</strong>
-        <span id="glasses-label">gelas hari ini</span>
-        <small id="approx">±0 dari 2100 ml</small>
+        <span id="glasses-label" data-i18n="glass.label"></span>
+        <small id="approx"></small>
       </div>
     </div>
-    <p class="next" id="next">Pengingat berikutnya —</p>
+    <p class="next" id="next" data-i18n="next.pending"></p>
   </section>
 
   <button class="drink" id="drink">
-    <span>+ Minum 1 gelas</span>
-    <small id="drink-ml">±250 ml</small>
+    <span data-i18n="drink.add"></span>
+    <small id="drink-ml"></small>
   </button>
-  <button class="undo" id="undo">Batalkan gelas terakhir</button>
+  <button class="undo" id="undo" data-i18n="drink.undo"></button>
 
   <section class="week">
-    <h2>Minggu ini</h2>
+    <h2 data-i18n="week.title"></h2>
     <ol id="week"></ol>
   </section>
 
   <details class="settings">
-    <summary>Pengaturan</summary>
+    <summary data-i18n="settings.title"></summary>
     <div class="grid">
-      <label>Target harian (ml)
+      <label><span data-i18n="settings.target"></span>
         <input type="number" id="s-target" min="500" max="6000" step="100">
       </label>
-      <label>Isi 1 gelas (ml)
+      <label><span data-i18n="settings.glass"></span>
         <input type="number" id="s-glass" min="50" max="1000" step="50">
       </label>
-      <label>Ingatkan setiap
+      <label><span data-i18n="settings.interval"></span>
         <select id="s-interval">
-          <option value="15">15 menit</option>
-          <option value="20">20 menit</option>
-          <option value="30">30 menit</option>
-          <option value="60">1 jam</option>
+          <option value="15" data-i18n="interval.15"></option>
+          <option value="20" data-i18n="interval.20"></option>
+          <option value="30" data-i18n="interval.30"></option>
+          <option value="60" data-i18n="interval.60"></option>
         </select>
       </label>
-      <label>Tampilan
+      <label><span data-i18n="settings.appearance"></span>
         <select id="s-theme">
-          <option value="auto">Ikuti sistem</option>
-          <option value="light">Terang</option>
-          <option value="dark">Gelap</option>
+          <option value="auto" data-i18n="theme.auto"></option>
+          <option value="light" data-i18n="theme.light"></option>
+          <option value="dark" data-i18n="theme.dark"></option>
         </select>
       </label>
-      <label>Jam bangun
+      <label><span data-i18n="settings.wake"></span>
         <input type="time" id="s-wake">
       </label>
-      <label>Jam tidur
+      <label><span data-i18n="settings.sleep"></span>
         <input type="time" id="s-sleep">
       </label>
     </div>
     <div class="actions">
-      <button id="test" class="ghost">Tes notifikasi</button>
-      <button id="save" class="primary">Simpan</button>
+      <button id="test" class="ghost" data-i18n="actions.test"></button>
+      <button id="save" class="primary" data-i18n="actions.save"></button>
     </div>
-    <p class="saved" id="saved" hidden>Tersimpan</p>
+    <p class="saved" id="saved" hidden data-i18n="settings.saved"></p>
   </details>
 
   <script src="common.js"></script>

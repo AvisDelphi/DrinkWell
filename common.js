@@ -6,7 +6,8 @@ const DEFAULT_SETTINGS = {
   glass: 250,         // ml per gelas
   wake: "06:00",
   sleep: "22:00",
-  theme: "auto"       // auto | light | dark
+  theme: "auto",      // auto | light | dark
+  lang: "id"          // id | en
 };
 
 // Pilihan interval yang membagi 60 menit dengan rata,

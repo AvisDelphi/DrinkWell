@@ -73,6 +73,7 @@ button { cursor: pointer; }
 .icon-btn svg { width: 16px; height: 16px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
 .icon-btn .moon { fill: var(--ink); stroke: none; }
 .icon-btn .sun { display: none; }
+.icon-btn.lang-btn span { font-size: 10.5px; font-weight: 800; letter-spacing: .04em; line-height: 1; }
 :root[data-theme="dark"] .icon-btn .sun { display: block; }
 :root[data-theme="dark"] .icon-btn .moon { display: none; }
 @media (prefers-color-scheme: dark) {

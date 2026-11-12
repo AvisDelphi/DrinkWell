@@ -14,6 +14,7 @@
 - 📊 **Progres visual** berbentuk gelas berisi air dan badge persentase pada ikon ekstensi.
 - 🗓️ **Riwayat mingguan** (Senin–Minggu) untuk melihat konsistensi minum.
 - 🌙 **Mode gelap/terang** yang bisa mengikuti sistem atau diatur manual.
+- 🌐 **Dua bahasa** — Indonesia dan English, bisa diganti lewat tombol bahasa di popup.
 - 🕕 **Jam aktif** — pengingat hanya muncul antara jam bangun dan jam tidur.
 - 🔒 **Privasi penuh** — tanpa server, tanpa pelacakan, data tersimpan di `chrome.storage.local`.
 
@@ -38,6 +39,7 @@ Ekstensi ini belum dipublikasikan di Chrome Web Store, jadi dipasang secara manu
 | Membatalkan catatan terakhir | Klik **Batalkan gelas terakhir** |
 | Menyalakan/mematikan pengingat | Toggle di kanan atas popup |
 | Mengubah tema | Tombol bulan/matahari di kanan atas |
+| Mengubah bahasa | Tombol **ID/EN** di kanan atas |
 | Mengatur target & interval | Buka bagian **Pengaturan** di popup |
 | Mencoba notifikasi | **Pengaturan** → **Tes notifikasi** |
 
@@ -49,6 +51,7 @@ Ekstensi ini belum dipublikasikan di Chrome Web Store, jadi dipasang secara manu
 | Isi 1 gelas | `250 ml` | Ukuran gelas yang dipakai saat mencatat (50–1000 ml) |
 | Interval pengingat | `30 menit` | 15, 20, 30, atau 60 menit |
 | Tampilan | `Ikuti sistem` | Auto, terang, atau gelap |
+| Bahasa | `Indonesia` | Indonesia atau English |
 | Jam bangun | `06:00` | Awal jam aktif pengingat |
 | Jam tidur | `22:00` | Akhir jam aktif pengingat |
 
@@ -65,6 +68,10 @@ drinkwell/
 ├── popup.js          # Interaksi popup: render, aksi, pengaturan
 ├── popup.css         # Tampilan popup (tema terang & gelap)
 ├── theme.js          # Terapkan tema lebih awal agar tidak berkedip
+├── i18n.js           # Helper bahasa: pilih kamus & terapkan ke DOM
+├── locales/
+│   ├── id.js         # Teks bahasa Indonesia
+│   └── en.js         # Teks bahasa Inggris
 └── icons/            # Ikon 16, 32, 48, dan 128 px
 ```
 

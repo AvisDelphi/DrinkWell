@@ -1,6 +1,11 @@
 const $ = (id) => document.getElementById(id);
-const DAYS = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+const { t } = DWI18n;
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+// Terapkan bahasa awal secara sinkron (pakai petunjuk localStorage),
+// sebelum data pengaturan selesai dibaca.
+DWI18n.applyI18n();
+$("lang-label").textContent = DWI18n.getLang().toUpperCase();
 
 /* ---------- Tema ---------- */
 function applyTheme(theme) {
@@ -22,6 +27,21 @@ $("theme-toggle").addEventListener("click", async () => {
   await saveSettings({ theme: next });
 });
 
+/* ---------- Bahasa ---------- */
+function applyLanguage(lang) {
+  DWI18n.setLang(lang);
+  DWI18n.applyI18n();
+  $("lang-label").textContent = DWI18n.getLang().toUpperCase();
+  try { localStorage.setItem("dw-lang", DWI18n.getLang()); } catch (e) {}
+}
+
+$("lang-toggle").addEventListener("click", async () => {
+  const { settings } = await getState();
+  const lang = settings.lang === "en" ? "id" : "en";
+  await saveSettings({ lang });
+  render();
+});
+
 /* ---------- Tampilan utama ---------- */
 async function render() {
   const { settings, log } = await getState();
@@ -30,12 +50,15 @@ async function render() {
   const pct = Math.min(100, (total / settings.target) * 100);
 
   applyTheme(settings.theme);
+  applyLanguage(settings.lang);
   $("enabled").checked = settings.enabled;
   $("glasses").textContent = glasses;
-  $("approx").textContent = `±${total} dari ${settings.target} ml`;
+  $("approx").textContent = t("glass.approx", { total, target: settings.target });
   $("water").style.height = `${pct}%`;
-  $("glass").setAttribute("aria-label", `Sekitar ${glasses} gelas, kira-kira ${total} dari ${settings.target} ml hari ini`);
-  $("drink-ml").textContent = `±${settings.glass} ml`;
+  $("glass").setAttribute("aria-label", t("glass.summary", {
+    glasses, total, target: settings.target
+  }));
+  $("drink-ml").textContent = t("drink.amount", { glass: settings.glass });
   $("undo").disabled = total === 0;
   $("undo").style.visibility = total === 0 ? "hidden" : "visible";
 
@@ -48,19 +71,21 @@ function renderWeek(log, target) {
   const today = new Date();
   const monday = new Date(today);
   monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+  const days = t("week.days");
 
   $("week").innerHTML = "";
-  DAYS.forEach((name, i) => {
+  days.forEach((name, i) => {
     const d = new Date(monday);
     d.setDate(monday.getDate() + i);
     const key = dateKey(d);
-    const ratio = Math.min(1, totalFor(log, key) / target);
+    const dayTotal = totalFor(log, key);
+    const ratio = Math.min(1, dayTotal / target);
 
     const li = document.createElement("li");
     if (key === dateKey(today)) li.className = "today";
     const dot = document.createElement("span");
     dot.className = "dot" + (ratio >= 1 ? " done" : "");
-    dot.title = `±${totalFor(log, key)} ml`;
+    dot.title = t("week.dot", { total: dayTotal });
     if (ratio > 0 && ratio < 1) {
       const fill = document.createElement("i");
       fill.style.height = `${ratio * 100}%`;
@@ -73,20 +98,24 @@ function renderWeek(log, target) {
 
 async function renderNext(settings) {
   if (!settings.enabled) {
-    $("next").textContent = "Pengingat sedang dimatikan";
+    $("next").textContent = t("next.off");
     return;
   }
   let alarm = await chrome.alarms.get("drink-reminder");
   if (!alarm) {
     await chrome.runtime.sendMessage({ type: "reschedule" });
     alarm = await chrome.alarms.get("drink-reminder");
-    if (!alarm) return;
+    if (!alarm) {
+      $("next").textContent = t("next.pending");
+      return;
+    }
   }
   const at = new Date(alarm.scheduledTime);
-  const time = at.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+  const locale = DWI18n.getLang() === "id" ? "id-ID" : "en-US";
+  const time = at.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
   $("next").textContent = isActiveHours(settings, at)
-    ? `Pengingat berikutnya pukul ${time}`
-    : `Di luar jam aktif, lanjut pukul ${settings.wake}`;
+    ? t("next.at", { time })
+    : t("next.outside", { wake: settings.wake });
 }
 
 function fillSettings(s) {

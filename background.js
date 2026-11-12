@@ -1,4 +1,4 @@
-importScripts("common.js");
+importScripts("common.js", "i18n.js", "locales/id.js", "locales/en.js");
 
 const ALARM = "drink-reminder";
 const SNOOZE = "drink-snooze";
@@ -16,29 +16,31 @@ async function schedule() {
 
 async function updateBadge() {
   const { settings, log } = await getState();
+  DWI18n.setLang(settings.lang);
   const pct = Math.min(100, Math.round((totalFor(log) / settings.target) * 100));
   chrome.action.setBadgeBackgroundColor({ color: pct >= 100 ? "#4FA987" : "#5B9BD5" });
-  chrome.action.setBadgeText({ text: settings.enabled ? `${pct}%` : "off" });
+  chrome.action.setBadgeText({ text: settings.enabled ? `${pct}%` : DWI18n.t("badge.off") });
 }
 
 async function remind(force = false) {
   const { settings, log } = await getState();
   if (!force && (!settings.enabled || !isActiveHours(settings))) return;
+  DWI18n.setLang(settings.lang);
 
   const total = totalFor(log);
   const glasses = Math.round(total / settings.glass);
   const message = total < settings.target
-    ? `Hari ini kamu sudah minum sekitar ${glasses} gelas (±${total} ml). Yuk, satu gelas lagi.`
-    : `Target harian sudah tercapai. Tetap minum secukupnya, ya.`;
+    ? DWI18n.t("notify.message", { glasses, total })
+    : DWI18n.t("notify.done");
 
   chrome.notifications.create(`drink-${Date.now()}`, {
     type: "basic",
     iconUrl: "icons/icon128.png",
-    title: "Waktunya minum air 💧",
+    title: DWI18n.t("notify.title"),
     message,
     buttons: [
-      { title: "Sudah minum" },
-      { title: "Ingatkan 10 menit lagi" }
+      { title: DWI18n.t("notify.drank") },
+      { title: DWI18n.t("notify.snooze") }
     ],
     priority: 2,
     requireInteraction: true
