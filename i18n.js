@@ -1,8 +1,8 @@
 // Helper bahasa bersama untuk popup dan background.
 // Semua teks disimpan terpisah di locales/id.js dan locales/en.js.
 (function (global) {
-  const LANGS = ["id", "en"];
-  const DEFAULT_LANG = "id";
+  const LANGS = ["en", "id"];
+  const DEFAULT_LANG = "en";
   let current = DEFAULT_LANG;
 
   // Petunjuk awal dari localStorage supaya teks tidak berkedip saat popup dibuka.

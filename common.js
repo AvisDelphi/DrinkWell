@@ -7,7 +7,7 @@ const DEFAULT_SETTINGS = {
   wake: "06:00",
   sleep: "22:00",
   theme: "auto",      // auto | light | dark
-  lang: "id"          // id | en
+  lang: "en"          // en | id
 };
 
 // Pilihan interval yang membagi 60 menit dengan rata,
